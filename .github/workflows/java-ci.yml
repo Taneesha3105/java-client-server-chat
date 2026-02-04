@@ -1,0 +1,39 @@
+name: Java Client Server CI-CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # ---------- CI ----------
+      - name: Compile Java files
+        run: |
+          javac Server.java
+          javac Client.java
+
+      # ---------- CD ----------
+      - name: Create JAR files
+        run: |
+          jar cfe Server.jar Server Server.class
+          jar cfe Client.jar Client Client.class
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-client-server-build
+          path: |
+            Server.jar
+            Client.jar
