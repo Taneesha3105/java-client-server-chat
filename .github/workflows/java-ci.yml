@@ -18,13 +18,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # ---------- CI ----------
+      # CI STEP
       - name: Compile Java files
         run: |
           javac Server.java
           javac Client.java
 
-      # ---------- CD ----------
+      # CD STEP
       - name: Create JAR files
         run: |
           jar cfe Server.jar Server Server.class
